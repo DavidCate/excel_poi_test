@@ -40,7 +40,6 @@ public class Main {
     public static void main(String[] args) {
         Main main=new Main();
         Workbook workbook=main.readExcel("/home/david/Idea Project/excel/src/main/resources/放映设备台账.xls");
-        HashMap<String,String> hashMap=new HashMap<>();
         HashSet<String> hashSet=new HashSet<>();
         int typeNum=0;
         if (workbook!=null){
@@ -62,8 +61,9 @@ public class Main {
             Iterator<String> iterator=hashSet.iterator();
             while (iterator.hasNext()){
                 String target=iterator.next();
+                System.out.println(target);
+                int flag=1;
                 for(int j = firstRowDataNum;j<lastRowDataNum;j++){
-                    int flag=1;
                     String STR="JKC(D)-JT-%s-%s-%s";
                     Row row=sheet.getRow(j);
                     Cell nameCell=row.getCell(1);
@@ -76,35 +76,32 @@ public class Main {
                         }else {
                             serializeNum="00"+serializeNum;
                         }
-                        System.out.println(dateCell.getCellType());
                         String tmpVal=String.valueOf(dateCell.getNumericCellValue());
                         tmpVal=tmpVal.substring(0,1)+tmpVal.substring(2,9);
-
-                        System.out.println();
                         STR=String.format(STR,nameValue,tmpVal,serializeNum);
+                        Cell resCell=row.getCell(3);
+                        if (resCell!=null){
+                            resCell.setCellValue(STR);
+                        }else {
+                            Cell cell=row.createCell(3);
+                            cell.setCellType(CellType.STRING);
+                            cell.setCellValue(STR);
+                        }
+                        flag+=1;
                     }
-
-                    Cell resCell=row.getCell(3);
-                    if (resCell!=null){
-                        resCell.setCellValue(STR);
-                    }else {
-                        Cell cell=row.createCell(3);
-                        cell.setCellType(CellType.STRING);
-                        cell.setCellValue(STR);
-                    }
-
+                }
+                try {
+                    OutputStream fileOut = new FileOutputStream("/home/david/Idea Project/excel/src/main/resources/放映设备台账1.xls");
+                    workbook.write(fileOut);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
 
 
-            try {
-                OutputStream fileOut = new FileOutputStream("/home/david/Idea Project/excel/src/main/resources/放映设备台账1.xls");
-                workbook.write(fileOut);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
 
 
 //            System.out.println(row.getFirstCellNum());
