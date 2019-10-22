@@ -42,7 +42,7 @@ public class ChineseCharacterUtil {
      *
      * @return 拼音
      */
-    private static String convertHanzi2Pinyin(String hanzi,boolean isFull){
+    public static String convertHanzi2Pinyin(String hanzi,boolean isFull){
         /***
          * ^[\u2E80-\u9FFF]+$ 匹配所有东亚区的语言
          * ^[\u4E00-\u9FFF]+$ 匹配简体和繁体
