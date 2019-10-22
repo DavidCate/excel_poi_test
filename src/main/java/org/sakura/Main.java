@@ -99,14 +99,6 @@ public class Main {
                     e.printStackTrace();
                 }
             }
-
-
-
-
-
-//            System.out.println(row.getFirstCellNum());
-//            System.out.println();
-//            System.out.println(row.getCell(20));
         }
     }
 }
